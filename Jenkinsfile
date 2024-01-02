@@ -1,5 +1,5 @@
-def frontendImage="pandaacademy/frontend"
-def backendImage="pandaacademy/backend"
+def frontendImage="192.168.44.44:8082/docker_registry/frontend"
+def backendImage="192.168.44.44:8082/docker_registry/backend"
 def backendDockerTag=""
 def frontendDockerTag=""
 def dockerRegistry=""
