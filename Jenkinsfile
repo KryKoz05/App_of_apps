@@ -1,5 +1,5 @@
-def frontendImage="192.168.44.44:8082/docker_registry/frontend"
-def backendImage="192.168.44.44:8082/docker_registry/backend"
+def frontendImage="krykoz05/frontend"
+def backendImage="krykoz05/backend"
 def backendDockerTag=""
 def frontendDockerTag=""
 def dockerRegistry=""
@@ -7,8 +7,13 @@ def registryCredentials="dockerhub"
 
 
 pipeline {
+
     agent {
         label 'agent'
+    }
+    
+    tools {
+        terraform 'Terraform'
     }
 
     environment {
@@ -64,6 +69,19 @@ pipeline {
             }
         }
     }
+
+    stage('Run terraform') {
+            steps {
+                dir('Terraform') {                
+                    git branch: 'main', url: 'https://github.com/Panda-Academy-Core-2-0/Terraform'
+                    withAWS(credentials:'AWS', region: 'us-east-1') {
+                            sh 'terraform init -backend-config=bucket=Krystian-Kozlowski-panda-devops-core-n'
+                            sh 'terraform apply -auto-approve -var bucket_name=Krystian-Kozlowski-panda-devops-core-n'
+                            
+                    } 
+                }
+            }
+        }
 
     post {
         always {
